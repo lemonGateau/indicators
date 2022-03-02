@@ -85,5 +85,4 @@ class Dmi(Strategy):
             "plus_di" : self.p_di,
             "minus_di": self.m_di,
             "adx"     : self.adx
-            }, index=self.df_close.index)
-
+            }, index=self.close.index)

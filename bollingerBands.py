@@ -50,4 +50,4 @@ class BollingerBands(Strategy):
             "middle": self.sma  ,
             "upper" : self.upper,
             "lower" : self.lower
-            }, index=self.df_close.index)
+            }, index=self.close.index)

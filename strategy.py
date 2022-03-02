@@ -28,4 +28,4 @@ class Strategy:
         pass
 
     def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
+        plot_df(self.build_df_indicator())

@@ -42,7 +42,8 @@ class Momentum(Strategy):
         self.signal = generate_sma(self.moment, term)
 
     def generate_baseline(self, base_value):
-        self.baseline =  pd.DataFrame(data=[base_value]*len(self.moment), index=self.moment.index, columns=["base"])["base"]
+        # self.baseline =  pd.DataFrame(data=[base_value]*len(self.moment), index=self.moment.index, columns=["base"])["base"]
+        self.baseline =  pd.Series(data=[base_value]*len(self.moment), index=self.moment.index, name="base")
 
     def build_df_indicator(self):
         return pd.DataFrame(data={

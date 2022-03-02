@@ -7,7 +7,7 @@ from .strategy import Strategy
 
 class FinalizedProfit(Strategy):
     def __init__(self, df_close, profit_ratio=0.2, loss_ratio=0.05):
-        self.df_close = df_close
+        self.close = df_close
 
         self.set_profit_ratio(profit_ratio)
         self.set_loss_ratio(loss_ratio)
@@ -40,5 +40,5 @@ class FinalizedProfit(Strategy):
 
     def build_df_indicator(self):
         return pd.DataFrame(data={
-            "Close": self.df_close
-        }, index=self.df_close.index)
+            "Close": self.close
+        }, index=self.close.index)
