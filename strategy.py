@@ -4,8 +4,6 @@ from common.plot_funcs import plot_df
 
 class Strategy:
     def __init__(self):
-        # self.set_latest_buy_price(None)
-        # self.set_strategy_name()
         pass
 
     def should_buy(self, i):
@@ -27,7 +25,7 @@ class Strategy:
         return self.strat_name
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
+        pass
 
     def plot_df_indicator(self):
         plot_df([self.build_df_indicator()])

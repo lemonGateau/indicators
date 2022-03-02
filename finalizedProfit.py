@@ -38,11 +38,7 @@ class FinalizedProfit(Strategy):
     def set_loss_ratio(self, loss_ratio):
         self.loss_ratio = loss_ratio
 
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
-
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
-        indicator["Close"] = self.df_close
-
-        return indicator
+        return pd.DataFrame(data={
+            "Close": self.df_close
+        }, index=self.df_close.index)

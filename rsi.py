@@ -61,11 +61,6 @@ class Rsi(Strategy):
         self.buy_ratio = buy_ratio
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
-        indicator["rsi"] = self.rsi
-
-        return indicator
-
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
-
+        return pd.DataFrame(data={
+            "rsi": self.rsi
+            }, index=self.rsi.index)

@@ -45,13 +45,8 @@ class Momentum(Strategy):
         self.baseline =  pd.DataFrame(data=[base_value]*len(self.moment), index=self.moment.index, columns=["base"])["base"]
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
-
-        indicator["moment"]     = self.moment
-        indicator["mom_signal"] = self.signal
-        indicator["mom_base"]   = self.baseline
-
-        return indicator
-
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
+        return pd.DataFrame(data={
+            "moment"    : self.moment,
+            "mom_signal": self.signal,
+            "mom_base"  : self.baseline
+            }, index=self.moment.index)

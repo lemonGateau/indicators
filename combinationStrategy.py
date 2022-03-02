@@ -1,8 +1,8 @@
 from collections import OrderedDict
 from common.plot_funcs import plot_df
+from .strategy import Strategy
 
-
-class CombinationStrategy:
+class CombinationStrategy(Strategy):
     def __init__(self, buy_strategies, sell_strategies):
         # 深いコピー
         self.strategies = buy_strategies + sell_strategies
@@ -60,10 +60,6 @@ class CombinationStrategy:
     def build_df_indicator(self):
         dfs = []
         for strat in self.strategies:
-            df = strat.build_df_indicator()
-            dfs.append(df)
+            dfs.append(strat.build_df_indicator())
 
         return dfs
-
-    def plot_df_indicator(self):
-        plot_df(self.build_df_indicator())

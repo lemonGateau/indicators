@@ -13,17 +13,8 @@ class Dmi(Strategy):
         self.high  = df_high
         self.low   = df_low
 
-        self.compute_tr()
-        self.compute_dms()
-        self.compute_dis(adx_term)
-        self.compute_dx()
-        self.compute_adx(adx_term)
-        self.compute_adxr(adxr_term)
-
         self.set_latest_buy_price(None)
         self.set_strategy_name("dmi")
-
-        # print(self.df)
 
     def should_sell(self, i):
         if self.latest_buy_price is None:
@@ -56,9 +47,9 @@ class Dmi(Strategy):
         df["p_dm"] = self.high        - self.high.shift()
         df["m_dm"] = self.low.shift() - self.low
 
-        self.p_dm, self.m_dm = self.adjust_dms(df)
+        self.p_dm, self.m_dm = self._adjust_dms(df)
 
-    def adjust_dms(self, df):
+    def _adjust_dms(self, df):
         # 一致なら両方0
         df.loc[df["p_dm"] == df["m_dm"], ["p_dm", "m_dm"]] = 0
 
@@ -90,13 +81,9 @@ class Dmi(Strategy):
         self.adxr = generate_sma(self.adx, term)
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
+        return pd.DataFrame(data={
+            "plus_di" : self.p_di,
+            "minus_di": self.m_di,
+            "adx"     : self.adx
+            }, index=self.df_close.index)
 
-        indicator["plus_di"]     = self.p_di
-        indicator["minus_di"]    = self.m_di
-        indicator["adx"]         = self.adx
-
-        return indicator
-
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])

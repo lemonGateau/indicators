@@ -26,12 +26,7 @@ class Cross(Strategy):
         return is_crossover(self.ma2[i-1:i+1], self.ma1[i-1:i+1])
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
-
-        indicator["ma1"]     = self.ma1
-        indicator["ma2"]     = self.ma2
-
-        return indicator
-
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
+        return pd.DataFrame(data={
+            "ma1": self.ma1,
+            "ma2": self.ma2
+        }, index=self.ma1.index)

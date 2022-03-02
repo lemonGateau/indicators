@@ -12,8 +12,8 @@ class BollingerBands(Strategy):
         self.std   = df_close.rolling(term).std()
         self.sma   = generate_sma(df_close, term)
 
-        self.set_upper(coef=3)
-        self.set_lower(coef=3)
+        self.generate_upper(coef=3)
+        self.generate_lower(coef=3)
 
         self.set_latest_buy_price(None)
         self.set_strategy_name("bb")
@@ -32,10 +32,10 @@ class BollingerBands(Strategy):
 
         return self.close[i] < self.lower[i]
 
-    def set_upper(self, coef=3):
+    def generate_upper(self, coef=3):
         self.upper = self.sma + coef * self.std
 
-    def set_lower(self, coef=3):
+    def generate_lower(self, coef=3):
         self.lower = self.sma - coef * self.std
 
     def get_upper(self):
@@ -45,14 +45,9 @@ class BollingerBands(Strategy):
         return self.lower
 
     def build_df_indicator(self):
-        indicator = pd.DataFrame()
-
-        indicator["Close"] = self.close
-        indicator["middle"] = self.sma
-        indicator["upper"] = self.upper
-        indicator["lower"] = self.lower
-
-        return indicator
-
-    def plot_df_indicator(self):
-        plot_df([self.build_df_indicator()])
+        return pd.DataFrame(data={
+            "Close" : self.close,
+            "middle": self.sma  ,
+            "upper" : self.upper,
+            "lower" : self.lower
+            }, index=self.df_close.index)
