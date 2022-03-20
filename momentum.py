@@ -33,13 +33,13 @@ class Momentum(Strategy):
 
         return False
 
-    def compute_moment(self, df_close, term):
-        self.moment = df_close - df_close.shift(term)
+    def compute_moment(self, df_close, mom_term=26):
+        self.moment = df_close - df_close.shift(mom_term)
 
-    def generate_signal(self, term):
-        self.signal = generate_sma(self.moment, term)
+    def generate_signal(self, signal_term=10):
+        self.signal = generate_sma(self.moment, signal_term)
 
-    def generate_baseline(self, base_value):
+    def generate_baseline(self, base_value=0):
         # self.baseline =  pd.DataFrame(data=[base_value]*len(self.moment), index=self.moment.index, columns=["base"])["base"]
         self.baseline =  pd.Series(data=[base_value]*len(self.moment), index=self.moment.index, name="base")
 

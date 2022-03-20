@@ -57,7 +57,7 @@ class Dmi(Strategy):
 
         return df["p_dm"], df["m_dm"]
 
-    def compute_dis(self, adx_term):
+    def compute_dis(self, adx_term=14):
         sum_pdm = self.p_dm.rolling(adx_term).sum()
         sum_mdm = self.m_dm.rolling(adx_term).sum()
         sum_tr  = self.tr.rolling(adx_term).sum()
@@ -68,10 +68,10 @@ class Dmi(Strategy):
     def compute_dx(self):
         self.dx = abs(self.p_di - self.m_di) / (self.p_di + self.m_di) * 100
 
-    def compute_adx(self, adx_term):
+    def compute_adx(self, adx_term=14):
         self.adx = generate_ema(self.dx, adx_term)
 
-    def compute_adxr(self, adxr_term):
+    def compute_adxr(self, adxr_term=25):
         self.adxr = generate_sma(self.adx, adxr_term)
 
     def build_df_indicator(self):

@@ -30,10 +30,10 @@ class FinalizedProfit(Strategy):
     def should_buy(self, i):
         return False
 
-    def set_profit_ratio(self, profit_ratio):
+    def set_profit_ratio(self, profit_ratio=0.2):
         self.profit_ratio = profit_ratio
 
-    def set_loss_ratio(self, loss_ratio):
+    def set_loss_ratio(self, loss_ratio=0.05):
         self.loss_ratio = loss_ratio
 
     def build_df_indicator(self):

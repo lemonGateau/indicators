@@ -29,6 +29,12 @@ class Rsi(Strategy):
 
         return False
 
+    def set_sell_ratio(self, sell_ratio=0.7):
+        self.sell_ratio = sell_ratio
+
+    def set_buy_ratio(self, buy_ratio=0.3):
+        self.buy_ratio = buy_ratio
+
     def compute_rsi(self, close, term):
         df = pd.DataFrame()
 
@@ -47,15 +53,6 @@ class Rsi(Strategy):
 
         # print(df)
         self.rsi = df["rsi"]
-
-    def get_rsi(self):
-        return self.rsi
-
-    def set_sell_ratio(self, sell_ratio):
-        self.sell_ratio = sell_ratio
-
-    def set_buy_ratio(self, buy_ratio):
-        self.buy_ratio = buy_ratio
 
     def build_df_indicator(self):
         return pd.DataFrame(data={

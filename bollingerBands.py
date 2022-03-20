@@ -4,7 +4,7 @@ from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class BollingerBands(Strategy):
-    def __init__(self, close, term):
+    def __init__(self, close, term=25):
         self.df = pd.DataFrame()
 
         self.close = close
