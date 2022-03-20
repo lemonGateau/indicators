@@ -1,8 +1,5 @@
 import pandas as pd
 
-from common.indicator_funcs import *
-from common.plot_funcs import plot_df
-from common.print_funcs import *
 from .strategy import Strategy
 
 
@@ -32,10 +29,10 @@ class Rsi(Strategy):
 
         return False
 
-    def compute_rsi(self, df_close, term):
+    def compute_rsi(self, close, term):
         df = pd.DataFrame()
 
-        df["diff"] = df_close.diff()
+        df["diff"] = close.diff()
         df["up"]   = df["diff"]
         df["down"] = df["diff"]
 

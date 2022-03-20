@@ -1,13 +1,11 @@
 import pandas as pd
 
-from common.indicator_funcs import *
-from common.plot_funcs import plot_df
-from common.print_funcs import *
+from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class FinalizedProfit(Strategy):
-    def __init__(self, df_close, profit_ratio=0.2, loss_ratio=0.05):
-        self.close = df_close
+    def __init__(self, close, profit_ratio=0.2, loss_ratio=0.05):
+        self.close = close
 
         self.set_profit_ratio(profit_ratio)
         self.set_loss_ratio(loss_ratio)
@@ -20,11 +18,11 @@ class FinalizedProfit(Strategy):
             return False
 
         # 利確
-        if should_realize_profit(self.df_close[i], self.latest_buy_price, self.profit_ratio):
+        if should_realize_profit(self.close[i], self.latest_buy_price, self.profit_ratio):
             return True
 
         # 損切り
-        if should_stop_loss(self.df_close[i], self.latest_buy_price, self.loss_ratio):
+        if should_stop_loss(self.close[i], self.latest_buy_price, self.loss_ratio):
             return True
 
         return False

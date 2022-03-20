@@ -2,17 +2,11 @@ from pandas_datareader import data
 import pandas as pd
 import datetime
 
-from common.indicator_funcs import *
-from common.plot_funcs import plot_df
-from common.print_funcs import *
+from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class Dmi(Strategy):
-    def __init__(self, df_close, df_high, df_low, adx_term, adxr_term):
-        self.close = df_close
-        self.high  = df_high
-        self.low   = df_low
-
+    def __init__(self):
         self.set_latest_buy_price(None)
         self.set_strategy_name("dmi")
 
@@ -34,20 +28,20 @@ class Dmi(Strategy):
 
         return False
 
-    def compute_tr(self):
-        t1 = self.high          - self.low
-        t2 = self.high          - self.close.shift()
-        t3 = self.close.shift() - self.low
+    def compute_tr(self, close, high, low):
+        t1 = high          - low
+        t2 = high          - close.shift()
+        t3 = close.shift() - low
 
         self.tr = pd.concat([t1, t2, t3], axis=1).max(axis=1)
 
-    def compute_dms(self):
-        df = pd.DataFrame()
+    def compute_dms(self, high, low):
+        dms = pd.DataFrame()
 
-        df["p_dm"] = self.high        - self.high.shift()
-        df["m_dm"] = self.low.shift() - self.low
+        dms["p_dm"] = high        - high.shift()
+        dms["m_dm"] = low.shift() - low
 
-        self.p_dm, self.m_dm = self._adjust_dms(df)
+        self.p_dm, self.m_dm = self._adjust_dms(dms)
 
     def _adjust_dms(self, df):
         # 一致なら両方0
@@ -63,10 +57,10 @@ class Dmi(Strategy):
 
         return df["p_dm"], df["m_dm"]
 
-    def compute_dis(self, term):
-        sum_pdm = self.p_dm.rolling(term).sum()
-        sum_mdm = self.m_dm.rolling(term).sum()
-        sum_tr  = self.tr.rolling(term).sum()
+    def compute_dis(self, adx_term):
+        sum_pdm = self.p_dm.rolling(adx_term).sum()
+        sum_mdm = self.m_dm.rolling(adx_term).sum()
+        sum_tr  = self.tr.rolling(adx_term).sum()
 
         self.p_di = sum_pdm / sum_tr * 100
         self.m_di = sum_mdm / sum_tr * 100
@@ -74,15 +68,15 @@ class Dmi(Strategy):
     def compute_dx(self):
         self.dx = abs(self.p_di - self.m_di) / (self.p_di + self.m_di) * 100
 
-    def compute_adx(self, term):
-        self.adx = generate_ema(self.dx, term)
+    def compute_adx(self, adx_term):
+        self.adx = generate_ema(self.dx, adx_term)
 
-    def compute_adxr(self, term):
-        self.adxr = generate_sma(self.adx, term)
+    def compute_adxr(self, adxr_term):
+        self.adxr = generate_sma(self.adx, adxr_term)
 
     def build_df_indicator(self):
         return pd.DataFrame(data={
             "plus_di" : self.p_di,
             "minus_di": self.m_di,
             "adx"     : self.adx
-            }, index=self.close.index)
+            }, index=self.p_di.index)

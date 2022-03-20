@@ -1,5 +1,6 @@
 import pandas as pd
-from common.plot_funcs import plot_df
+
+from .common.plot_funcs import plot_df
 
 
 class Strategy:

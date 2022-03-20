@@ -1,16 +1,15 @@
 import pandas as pd
-from common.indicator_funcs import *
-from common.plot_funcs import plot_df
-from common.print_funcs import *
+
+from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class BollingerBands(Strategy):
-    def __init__(self, df_close, term):
+    def __init__(self, close, term):
         self.df = pd.DataFrame()
 
-        self.close = df_close
-        self.std   = df_close.rolling(term).std()
-        self.sma   = generate_sma(df_close, term)
+        self.close = close
+        self.std   = close.rolling(term).std()
+        self.sma   = generate_sma(close, term)
 
         self.generate_upper(coef=3)
         self.generate_lower(coef=3)

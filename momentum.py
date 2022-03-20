@@ -1,8 +1,6 @@
 import pandas as pd
 
-from common.indicator_funcs import *
-from common.plot_funcs import plot_df
-from common.print_funcs import *
+from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class Momentum(Strategy):
