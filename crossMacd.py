@@ -9,14 +9,11 @@ class CrossMacd(Strategy):
         self.set_latest_buy_price(None)
         self.set_strategy_name("macd")
 
-    def generate_macds(self, close, ema_terms=[12, 25], signal_term=9):
-        ema1 = generate_ema(close, ema_terms[0])
-        ema2 = generate_ema(close, ema_terms[1])
+    def should_buy(self, i):
+        if self.latest_buy_price:
+            return False
 
-        macd = ema1 - ema2
-        signal = generate_sma(macd, signal_term)
- 
-        self.cross = Cross(macd, signal)
+        return self.cross.should_buy(i)
 
     def should_sell(self, i):
         if self.latest_buy_price is None:
@@ -24,12 +21,17 @@ class CrossMacd(Strategy):
 
         return self.cross.should_sell(i)
 
-    def should_buy(self, i):
-        if self.latest_buy_price:
-            return False
+    def build_indicators(self):
+        return self.cross.build_indicators()
 
-        return self.cross.should_buy(i)
+    def generate_indicators(self, close, terms=[12, 25], signal_term=9):
+        self._generate_macds(close, terms, signal_term)
 
-    def build_df_indicator(self):
-        return self.cross.build_df_indicator()
+    def _generate_macds(self, close, terms=[12, 25], signal_term=9):
+        ema1 = generate_ema(close, terms[0])
+        ema2 = generate_ema(close, terms[1])
 
+        macd   = ema1 - ema2
+        signal = generate_sma(macd, signal_term)
+ 
+        self.cross = Cross(macd, signal)

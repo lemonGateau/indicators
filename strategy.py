@@ -25,8 +25,8 @@ class Strategy:
     def get_strategy_name(self):
         return self.strat_name
 
-    def build_df_indicator(self):
+    def build_indicators(self):
         pass
 
     def plot_df_indicator(self):
-        plot_df(self.build_df_indicator())
+        plot_df(self.build_indicators())

@@ -29,6 +29,13 @@ class CombinationStrategy(Strategy):
                 return True
         return False
 
+    def build_indicators(self):
+        dfs = []
+        for strat in self.strategies:
+            dfs.append(strat.build_indicators())
+
+        return dfs
+
     def set_strategy_name(self, strat_names=None):
         if type(strat_names) is str:
             self.strat_name = strat_names
@@ -48,18 +55,6 @@ class CombinationStrategy(Strategy):
 
         self.strat_name = '_'.join(buy_strat_names) + '--' + '_'.join(sell_strat_names)
 
-
-    def get_strategy_name(self):
-        return self.strat_name
-
-
     def set_latest_buy_price(self, buy_price):
         for strat in self.strategies:
             strat.set_latest_buy_price(buy_price)
-
-    def build_df_indicator(self):
-        dfs = []
-        for strat in self.strategies:
-            dfs.append(strat.build_df_indicator())
-
-        return dfs

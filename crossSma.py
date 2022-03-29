@@ -9,11 +9,11 @@ class CrossSma(Strategy):
         self.set_latest_buy_price(None)
         self.set_strategy_name("sma")
 
-    def generate_smas(self, close, terms=[12, 25]):
-        sma1 = generate_sma(close, terms[0])
-        sma2 = generate_sma(close, terms[1])
+    def should_buy(self, i):
+        if self.latest_buy_price:
+            return False
 
-        self.cross = Cross(sma1, sma2)
+        return self.cross.should_buy(i)
 
     def should_sell(self, i):
         if self.latest_buy_price is None:
@@ -21,12 +21,14 @@ class CrossSma(Strategy):
 
         return self.cross.should_sell(i)
 
-    def should_buy(self, i):
-        if self.latest_buy_price:
-            return False
+    def build_indicators(self):
+        return self.cross.build_indicators()
 
-        return self.cross.should_buy(i)
+    def generate_indicators(self, close, terms=[12, 25]):
+        self._generate_smas(close, terms)
 
-    def build_df_indicator(self):
-        return self.cross.build_df_indicator()
+    def _generate_smas(self, close, terms=[12, 25]):
+        sma1 = generate_sma(close, terms[0])
+        sma2 = generate_sma(close, terms[1])
 
+        self.cross = Cross(sma1, sma2)

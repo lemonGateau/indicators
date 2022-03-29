@@ -4,14 +4,14 @@ from .common.indicator_funcs import *
 from .strategy import Strategy
 
 class FinalizedProfit(Strategy):
-    def __init__(self, close, profit_ratio=0.2, loss_ratio=0.05):
+    def __init__(self, close):
         self.close = close
-
-        self.set_profit_ratio(profit_ratio)
-        self.set_loss_ratio(loss_ratio)
 
         self.set_latest_buy_price(None)
         self.set_strategy_name("fp")
+
+    def should_buy(self, i):
+        return False
 
     def should_sell(self, i):
         if self.latest_buy_price is None:
@@ -27,16 +27,17 @@ class FinalizedProfit(Strategy):
 
         return False
 
-    def should_buy(self, i):
-        return False
-
-    def set_profit_ratio(self, profit_ratio=0.2):
-        self.profit_ratio = profit_ratio
-
-    def set_loss_ratio(self, loss_ratio=0.05):
-        self.loss_ratio = loss_ratio
-
-    def build_df_indicator(self):
+    def build_indicators(self):
         return pd.DataFrame(data={
             "Close": self.close
         }, index=self.close.index)
+
+    def generate_indicators(self, profit_ratio=0.2, loss_ratio=0.05):
+        self._set_profit_ratio(profit_ratio)
+        self._set_loss_ratio(loss_ratio)
+
+    def _set_profit_ratio(self, profit_ratio=0.2):
+        self.profit_ratio = profit_ratio
+
+    def _set_loss_ratio(self, loss_ratio=0.05):
+        self.loss_ratio   = loss_ratio

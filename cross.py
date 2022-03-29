@@ -14,7 +14,7 @@ class Cross():
     def should_buy(self, i):
         return is_crossover(self.ma2[i-1:i+1], self.ma1[i-1:i+1])
 
-    def build_df_indicator(self):
+    def build_indicators(self):
         return pd.DataFrame(data={
             "ma1": self.ma1,
             "ma2": self.ma2
